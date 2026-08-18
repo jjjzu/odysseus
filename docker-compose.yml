@@ -2,7 +2,7 @@ services:
   odysseus:
     build: .
     ports:
-      - "${APP_BIND:-127.0.0.1}:${APP_PORT:-7000}:7000"
+      - "7000"
     volumes:
       - ${APP_DATA_DIR:-./data}:/app/data
       - ${APP_LOGS_DIR:-./logs}:/app/logs
@@ -89,8 +89,6 @@ services:
 
   chromadb:
     image: docker.io/chromadb/chroma:latest
-    ports:
-      - "${CHROMADB_BIND:-127.0.0.1}:8100:8000"
     volumes:
       - chromadb-data:/chroma/chroma
     environment:
@@ -121,8 +119,6 @@ services:
         # and we carry on, letting searxng report anything genuinely wrong.
         /usr/local/searxng/.venv/bin/python /tmp/migrate-searxng-settings.py /etc/searxng/settings.yml || true
         exec /usr/local/searxng/entrypoint.sh
-    ports:
-      - "127.0.0.1:8080:8080"
     volumes:
       - searxng-data:/etc/searxng
       - ./config/searxng/settings.yml:/tmp/searxng-settings.yml.template
@@ -155,8 +151,6 @@ services:
   ntfy:
     image: docker.io/binwiederhier/ntfy
     command: serve
-    ports:
-      - "${NTFY_BIND:-127.0.0.1}:8091:80"
     volumes:
       - ntfy-cache:/var/cache/ntfy
     environment:
